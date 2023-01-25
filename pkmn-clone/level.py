@@ -11,13 +11,14 @@ class LevelManager:
     def __init__(self):
         self.display_surface = pg.display.get_surface()
 
-        # Everything displayed in the game in decreasing priority order
-        self.background_sprites = YSortCameraGroup()
-        self.background_detailed_sprites = YSortCameraGroup()
-        self.middleground_sprites = YSortCameraGroup()
-        self.middleground_detailed_sprites = YSortCameraGroup()
-        self.foreground_sprites = YSortCameraGroup()
-        self.foreground_detailed_sprites = YSortCameraGroup()
+        # Sprite group in order of drawing
+        self.sprite_layers = {
+            "0": YSortCameraGroup(),
+            "1": YSortCameraGroup(),
+            "2": YSortCameraGroup(),
+            "3": YSortCameraGroup(),
+            "4": YSortCameraGroup(),
+        }
 
         # Sprites with collision
         self.obstacle_sprites = pg.sprite.Group()
@@ -27,66 +28,56 @@ class LevelManager:
         self.create_level()
 
     def load_level_data(self):
-        level_data_file = os.path.join(MAPS_DIRECTORY, "demo.tmx")
+        level_data_file = os.path.join(MAPS_DIRECTORY, "hometown.tmx")
         self.level_data = load_pygame(level_data_file)
 
     def create_level(self):
+        """
+        Reconstructs the level data from level data file to groups of layers
+        """
+        sprite_layer_names = ["0", "1", "2", "3", "4"]
+        obstacles_layer_name = "obstacles"
+        water_layer_name = "water"
+        consumables_layer_name = "consumables"
+        transitions_layer_name = "transition"
+        player_layer_name = "player"
 
-        # Process each layer and add them to corresponding sprite groups
-        self._process_layer("background", [self.background_sprites])
-        self._process_layer("background_detailed", [self.background_detailed_sprites])
-        self._process_layer(
-            "middleground",
-            [self.middleground_sprites, self.obstacle_sprites],
-        )
-        self._process_layer(
-            "middleground_detailed",
-            [self.middleground_detailed_sprites, self.obstacle_sprites],
-        )
-        self._process_layer("foreground", [self.foreground_sprites])
-        self._process_layer("foreground_detailed", [self.foreground_detailed_sprites])
+        self._process_basic_layers(sprite_layer_names, self.sprite_layers)
+        self._process_player_layer(player_layer_name, [self.sprite_layers["2"]])
+        self._process_layer(obstacles_layer_name, self.obstacle_sprites)
 
-        # Create player and set it to middleground
-        # TODO: Figure a better way (tiled object?)
-        self.player = Player(
-            (2 * self.level_data.tilewidth, 2 * self.level_data.tilewidth),
-            [self.middleground_sprites],
-            self.obstacle_sprites,
-        )
+    def _process_basic_layers(self, layer_names: list, sprite_groups: dict):
+        for name in layer_names:
+            self._process_layer(name, sprite_groups[name])
 
-    def _process_layer(self, layer_name, groups):
+    def _process_layer(self, layer_name: str, groups: list):
         layer = self.level_data.get_layer_by_name(layer_name)
-
         for (x, y, gid) in layer:
             if image := self.level_data.get_tile_image_by_gid(gid):
                 pos = (x * self.level_data.tilewidth, y * self.level_data.tilewidth)
                 Tile(pos=pos, image=image, groups=groups)
 
+    def _process_player_layer(self, layer_name: str, groups: list):
+        layer = self.level_data.get_layer_by_name(layer_name)
+        for (x, y, gid) in layer:
+            if self.level_data.get_tile_image_by_gid(gid):
+                pos = (x * self.level_data.tilewidth, y * self.level_data.tilewidth)
+                self.player = Player(pos, groups, self.obstacle_sprites)
+
     def run(self):
         level_width = self.level_data.width * self.level_data.tilewidth
         level_height = self.level_data.height * self.level_data.tileheight
 
-        # Background
-        self.background_sprites.custom_draw(self.player, (level_width, level_height))
-        self.background_detailed_sprites.custom_draw(
-            self.player,
-            (level_width, level_height),
-        )
-
-        # Middleground
-        self.middleground_sprites.custom_draw(self.player, (level_width, level_height))
-        self.middleground_sprites.update()
-        self.middleground_detailed_sprites.custom_draw(
-            self.player,
-            (level_width, level_height),
-        )
-
-        # Foreground
-        self.foreground_sprites.custom_draw(self.player, (level_width, level_height))
-        self.foreground_detailed_sprites.custom_draw(
-            self.player,
-            (level_width, level_height),
-        )
+        for key in self.sprite_layers.keys():
+            if key == "2":
+                self.sprite_layers[key].custom_draw(
+                    self.player, (level_width, level_height)
+                )
+                self.sprite_layers[key].update()
+            else:
+                self.sprite_layers[key].custom_draw(
+                    self.player, (level_width, level_height)
+                )
 
 
 class YSortCameraGroup(pg.sprite.Group):

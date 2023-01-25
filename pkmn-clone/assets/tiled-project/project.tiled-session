@@ -1,0 +1,51 @@
+{
+    "activeFile": "D:/dev/pkmn-clone/pkmn-clone/maps/hometown.tmx",
+    "expandedProjectPaths": [
+        "D:/dev/pkmn-clone/pkmn-clone/maps",
+        "D:/dev/pkmn-clone/pkmn-clone/assets/pokemon-tileset",
+        "D:/dev/pkmn-clone/pkmn-clone/assets/helpers"
+    ],
+    "fileStates": {
+        "D:/dev/pkmn-clone/pkmn-clone/assets/helpers/helpers.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "D:/dev/pkmn-clone/pkmn-clone/assets/pokemon-tileset/pokemon-tileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        },
+        "D:/dev/pkmn-clone/pkmn-clone/maps/demo.tmx": {
+            "scale": 0.6132324218749999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 556.0697507763358,
+                "y": 239.71335297396297
+            }
+        },
+        "D:/dev/pkmn-clone/pkmn-clone/maps/hometown.tmx": {
+            "scale": 3,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 331.66666666666663,
+                "y": 432
+            }
+        }
+    },
+    "last.imagePath": "D:/dev/pkmn-clone/pkmn-clone/assets/helpers",
+    "openFiles": [
+        "D:/dev/pkmn-clone/pkmn-clone/maps/hometown.tmx",
+        "D:/dev/pkmn-clone/pkmn-clone/assets/helpers/helpers.tsx"
+    ],
+    "project": "project.tiled-project",
+    "recentFiles": [
+        "D:/dev/pkmn-clone/pkmn-clone/assets/helpers/helpers.tsx",
+        "D:/dev/pkmn-clone/pkmn-clone/maps/hometown.tmx",
+        "D:/dev/pkmn-clone/pkmn-clone/assets/pokemon-tileset/pokemon-tileset.tsx",
+        "D:/dev/pkmn-clone/pkmn-clone/maps/demo.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
