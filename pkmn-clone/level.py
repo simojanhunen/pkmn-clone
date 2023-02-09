@@ -95,7 +95,7 @@ class YSortCameraGroup(pg.sprite.Group):
         self.offset.x = target.rect.centerx - self.half_width
         self.offset.y = target.rect.centery - self.half_height
 
-        # # Fix camera to map size
+        # Fix camera to map size
         display_size = self.display_surface.get_size()
         self.offset.x = max(0, self.offset.x)  # left
         self.offset.y = max(0, self.offset.y)  # top

@@ -1,6 +1,16 @@
 # PKMN Clone
 
+<div align="center">
+
+<div>
+
 An attempt at a homage to the original handheld games.
+
+</div>
+
+<img src="assets/preview.png" width="480">
+
+</div>
 
 # License
 
